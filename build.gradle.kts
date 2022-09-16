@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	id("com.netflix.dgs.codegen") version "${Dependency.NETFLIX_DGS}"
 }
 
 group = "com.lyjguy.kotlinspringgraphqldgs"
@@ -33,8 +34,6 @@ dependencies {
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 }
 
-extra["kotlin.version"] = "1.4.31"
-
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -44,4 +43,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks {
+	generateJava {
+		schemaPaths = mutableListOf("${projectDir}/src/main/resources/schema") // List of directories containing schema files
+		packageName = "com.lyjguy.kotlinspringgraphqldgs" // The package name to use to generate sources
+		generateClient = true // Enable generating the type safe query API
+	}
 }
