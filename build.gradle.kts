@@ -22,16 +22,24 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-graphql")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("com.github.javafaker:javafaker:1.+") {
+		exclude("org.yaml")
+	}
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	runtimeOnly("com.h2database:h2")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+	implementation("com.netflix.graphql.dgs:graphql-dgs-extended-scalars")
 	implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
+
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework:spring-webflux")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
+	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 }
 
 tasks.withType<KotlinCompile> {
@@ -51,4 +59,9 @@ tasks {
 		packageName = "com.lyjguy.kotlinspringgraphqldgs" // The package name to use to generate sources
 		generateClient = true // Enable generating the type safe query API
 	}
+}
+
+tasks.withType<com.netflix.graphql.dgs.codegen.gradle.GenerateJavaTask> {
+	generateClient = true
+	packageName = "com.lyjguy.kotlinspringgraphqldgs"
 }
